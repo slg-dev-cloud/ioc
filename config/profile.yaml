@@ -1,0 +1,132 @@
+# Owner profile: seeds tracks, the watchlist, and owner settings (spec §3, seed rules).
+# This file is the initial seed only. `pnpm seed` inserts rows that don't exist yet and
+# never overwrites ones that do; after that, edit in the Settings page.
+# `pnpm seed -- --reset-profile` overwrites the DB from this file (asks first).
+# Runtime code never reads this file.
+#
+# Where each block lands:
+#   owner.{name, organizations, context}            -> settings.owner
+#   owner.{timezone, brief_build_time,
+#          brief_delivery_time}                     -> settings.schedule
+#   tracks                                          -> tracks table
+#   watchlist                                       -> watchlist_entities table (matched by name)
+#   ranking                                         -> settings.ranking
+#   budget                                          -> settings.budget
+#   model_pricing                                   -> settings.model_pricing
+
+owner:
+  name: D'Angello
+  organizations: [Danber Technologies, Steward Lens Group]
+  timezone: Asia/Tokyo
+  brief_build_time: "07:10"
+  brief_delivery_time: "08:00"
+  context: >
+    Founder/CEO building multiple AI-augmented software products across fintech,
+    legal tech/investigations, healthcare intake, and defense/government. Values
+    compliance-forward positioning and lean, agentic product design. Also evaluates
+    broader venture opportunities through Steward Lens Group.
+
+tracks:
+  - id: indopacific_defense
+    title: Indo-Pacific & Defense
+    priority: 1
+    max_findings: 4
+    description: Regional security (China, Taiwan, Japan, Korea), force posture, military policy, defense technology. Unclassified public information only.
+  - id: ai_tech
+    title: AI, Technology & Cyber
+    priority: 2
+    max_findings: 4
+    description: Frontier models, AI agents, enterprise adoption, developer tooling, AI regulation, significant cyber threats and exploited vulnerabilities.
+  - id: fintech_reg
+    title: Fintech & Open Banking
+    priority: 3
+    max_findings: 3
+    description: Consumer finance regulation, open banking and data access, aggregators, personal-finance apps, payments.
+  - id: legal_investigations
+    title: Legal Tech & Investigations
+    priority: 4
+    max_findings: 3
+    description: Legal technology, AI in legal practice, court and bar guidance, investigative and case-management tools, private investigation industry.
+  - id: health_compliance
+    title: Healthcare Intake & Compliance
+    priority: 5
+    max_findings: 2
+    description: Patient intake and forms automation, HIPAA and health-data rules, interoperability, AI in clinical administration.
+  - id: defense_acq
+    title: Defense Acquisition & GovTech
+    priority: 6
+    max_findings: 3
+    description: Contract opportunities and awards, software acquisition reform, training-management systems, government AI adoption.
+  - id: economy
+    title: Economy & Markets
+    priority: 7
+    max_findings: 3
+    description: Monetary policy (Fed, BoJ), inflation, rates, trade and tariffs, supply chains, venture funding climate.
+  - id: leadership_workforce
+    title: Leadership, Education & Workforce
+    priority: 8
+    max_findings: 2
+    description: Organizational leadership, workforce development, AI-enabled instructional design, education technology.
+  - id: family_life
+    title: Family & Quality of Life
+    priority: 9
+    max_findings: 2
+    description: Policies affecting military families and international communities, schools, housing, cost of living (especially Japan-based US families).
+  # No track section of its own: findings render in the compact
+  # "Signals (preview)" section of the brief (spec §4, §8).
+  - id: signals
+    title: Signals (preview)
+    priority: 10
+    max_findings: 5
+    description: Consumer complaint trends, recalls, and builder-community frustration relevant to the owner's verticals.
+
+watchlist:
+  # Own ventures: the classifier flags items that touch these domains.
+  - name: StewardLens
+    kind: own_venture
+    tracks: [fintech_reg]
+    keywords: [Plaid, "open banking", "Section 1033", "personal financial data rights", "personal finance app", "financial coaching", "account aggregation"]
+  - name: Throughline
+    kind: own_venture
+    tracks: [legal_investigations]
+    keywords: ["case management software", "private investigator", "PI licensing", "investigative AI", "OSINT tools", "evidence management"]
+  - name: Onvero
+    kind: own_venture
+    tracks: [health_compliance]
+    keywords: ["patient intake", "intake forms", "conversational forms", HIPAA, "form automation", "digital front door"]
+  - name: RTMS
+    kind: own_venture
+    tracks: [defense_acq, indopacific_defense]
+    keywords: ["rifle qualification", "marksmanship program", "range management", "training management system", "Marine Corps training"]
+  - name: Danber Technologies
+    kind: own_venture
+    tracks: [defense_acq]
+    keywords: ["Danber Technologies"]
+  - name: Steward Lens Group
+    kind: own_venture
+    tracks: [economy]
+    keywords: ["Steward Lens Group"]
+  # TODO: add named competitors for each venture (kind: competitor)
+
+ranking:
+  relevance_gate: 35
+  min_significance: 45
+  cluster_join_cosine: 0.80
+  cluster_strong_cosine: 0.86
+  weights:
+    importance: 0.45
+    relevance: 0.35
+    per_distinct_source: 4
+    primary_source_bonus: 5
+    watchlist_bonus: 10
+    age_penalty_per_hour: 0.3
+
+budget:
+  daily_llm_usd: 5
+
+# USD per million tokens, used to compute llm_calls.cost_usd.
+# Fill in from Anthropic's current pricing page before M3; left empty on purpose
+# rather than guessed. Keys must match the MODEL_* env values.
+model_pricing: {}
+#  claude-haiku-5-5:  { input_per_mtok: , output_per_mtok: }
+#  claude-sonnet-5-5: { input_per_mtok: , output_per_mtok: }

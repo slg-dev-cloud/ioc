@@ -1,0 +1,31 @@
+{
+  "name": "ioc",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter @ioc/server --filter @ioc/web dev",
+    "db:generate": "pnpm --filter @ioc/shared db:generate",
+    "db:migrate": "pnpm --filter @ioc/shared db:migrate",
+    "seed": "pnpm --filter @ioc/server seed",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "lint": "eslint .",
+    "collect": "pnpm --filter @ioc/server collect",
+    "brief:dry": "pnpm --filter @ioc/server brief:dry",
+    "brief:send": "pnpm --filter @ioc/server brief:send"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
+  }
+}

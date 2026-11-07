@@ -1,0 +1,35 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: ioc
+          POSTGRES_PASSWORD: ioc
+          POSTGRES_DB: ioc_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ioc" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      CI: "true"
+      TEST_DATABASE_URL: postgresql://ioc:ioc@localhost:5432/ioc_test
+      DATABASE_URL: postgresql://ioc:ioc@localhost:5432/ioc_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      # Connector tests use recorded fixtures only; no network access needed.
+      - run: pnpm test
+      - run: pnpm --filter @ioc/web build

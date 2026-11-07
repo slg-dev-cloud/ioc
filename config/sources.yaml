@@ -1,0 +1,243 @@
+# Starter source registry for Phase 1.
+# EVERY entry is unverified until Task 0 (spec §6.3) confirms:
+#   - the endpoint
+#   - the response format
+#   - rate limits
+#   - terms, including whether excerpts may be stored
+# Keep `enabled: false` until then. Feed URLs change; if one is wrong, find the
+# publisher's current official feed, or mark the source unsupported.
+#
+# Record Task 0 results in each entry's `terms_notes:` field.
+# `pnpm seed` upserts these entries by `key` (definition fields only). It never
+# touches runtime state: watermarks live in the source_state table, not in `config`.
+# Item and fingerprint rules per connector: spec §6.2.1.
+
+defaults:
+  enabled: false
+  rate_limit_per_min: 10
+
+sources:
+  # ---------- Broad global coverage ----------
+  - key: gdelt-indopacific
+    name: GDELT DOC API — Indo-Pacific security
+    connector_type: gdelt
+    access_method: public_api
+    tracks: [indopacific_defense]
+    cadence_minutes: 30
+    config:
+      endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      query: '(Taiwan OR "South China Sea" OR "East China Sea" OR Okinawa OR "Korean Peninsula" OR PLA) (military OR defense OR security)'
+      mode: ArtList
+      max_records: 75
+
+  - key: gdelt-ai-tech
+    name: GDELT DOC API — AI & technology
+    connector_type: gdelt
+    access_method: public_api
+    tracks: [ai_tech]
+    cadence_minutes: 60
+    config:
+      endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      query: '("artificial intelligence" OR "AI model" OR "AI agents" OR "AI regulation")'
+      mode: ArtList
+      max_records: 75
+
+  - key: gdelt-economy
+    name: GDELT DOC API — economy & markets
+    connector_type: gdelt
+    access_method: public_api
+    tracks: [economy]
+    cadence_minutes: 60
+    config:
+      endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      query: '("interest rates" OR inflation OR "central bank" OR tariffs OR "supply chain" OR "venture funding")'
+      mode: ArtList
+      max_records: 75
+
+  - key: gdelt-military-family
+    name: GDELT DOC API — military family & quality of life
+    connector_type: gdelt
+    access_method: public_api
+    tracks: [family_life]
+    cadence_minutes: 360
+    priority: low
+    config:
+      endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      query: '("military families" OR DoDEA OR "PCS move" OR "SOFA status" OR "base housing")'
+      mode: ArtList
+      max_records: 50
+
+  # ---------- Government / primary sources ----------
+  - key: federal-register-fin-reg
+    name: Federal Register — financial regulators
+    connector_type: federal_register
+    access_method: public_api
+    is_primary: true
+    tracks: [fintech_reg]
+    cadence_minutes: 720
+    config:
+      endpoint: https://www.federalregister.gov/api/v1/documents.json
+      agencies: [consumer-financial-protection-bureau, comptroller-of-the-currency, securities-and-exchange-commission, financial-crimes-enforcement-network]
+
+  - key: federal-register-defense-tech
+    name: Federal Register — defense, export controls, FTC, HHS
+    connector_type: federal_register
+    access_method: public_api
+    is_primary: true
+    tracks: [defense_acq, ai_tech, health_compliance]
+    cadence_minutes: 720
+    config:
+      endpoint: https://www.federalregister.gov/api/v1/documents.json
+      agencies: [defense-department, industry-and-security-bureau, federal-trade-commission, health-and-human-services-department]
+
+  - key: dod-contracts
+    name: DoD daily contract announcements
+    connector_type: html_page   # look for an official RSS feed first; respect robots.txt
+    access_method: permitted_crawl
+    is_primary: true
+    tracks: [defense_acq]
+    cadence_minutes: 1440
+    config:
+      url: https://www.defense.gov/News/Contracts/
+
+  - key: sam-gov-opportunities
+    name: SAM.gov contract opportunities
+    connector_type: sam_gov
+    access_method: public_api   # requires SAM_GOV_API_KEY
+    is_primary: true
+    tracks: [defense_acq]
+    cadence_minutes: 1440
+    config:
+      endpoint: https://api.sam.gov/opportunities/v2/search
+      keywords: ["training management", "range management", "case management", "investigative software", "intake automation", "conversational AI"]
+
+  - key: cisa-kev
+    name: CISA Known Exploited Vulnerabilities
+    connector_type: cisa_kev
+    access_method: public_feed
+    is_primary: true
+    tracks: [ai_tech]
+    cadence_minutes: 360
+    config:
+      url: https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+      # One evidence item per CVE (source_item_id = cveID); only entries with
+      # dateAdded after the watermark are emitted.
+
+  - key: fed-press
+    name: Federal Reserve press releases
+    connector_type: rss
+    access_method: public_feed
+    is_primary: true
+    tracks: [economy]
+    cadence_minutes: 180
+    config:
+      url: https://www.federalreserve.gov/feeds/press_all.xml
+
+  # ---------- Signals preview (Phase 1) ----------
+  - key: cfpb-complaints
+    name: CFPB Consumer Complaint Database
+    connector_type: cfpb_complaints
+    access_method: public_api
+    is_primary: true
+    tracks: [signals, fintech_reg]
+    cadence_minutes: 1440
+    config:
+      endpoint: https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/
+      products: ["Checking or savings account", "Money transfer, virtual currency, or money service", "Credit reporting or other personal consumer reports"]
+      note: "Aggregate trends only in Phase 1; do not surface individual narratives in the brief."
+      # One item per product per completed ISO week (source_item_id = "<product>:<ISO week>"),
+      # emitted once aggregate_lag_days have passed since the week ended.
+      aggregate_lag_days: 7
+
+  - key: cpsc-recalls
+    name: CPSC recalls
+    connector_type: cpsc_recalls
+    access_method: public_api
+    is_primary: true
+    tracks: [signals]
+    cadence_minutes: 1440
+    priority: low
+    config:
+      endpoint: https://www.saferproducts.gov/RestWebServices/Recall
+      format: json
+
+  - key: hn-search
+    name: Hacker News (Algolia search API)
+    connector_type: hn_algolia
+    access_method: public_api
+    tracks: [signals, ai_tech]
+    cadence_minutes: 120
+    config:
+      endpoint: https://hn.algolia.com/api/v1/search_by_date
+      queries: ["Ask HN alternative to", "frustrated with", "open banking", "legal tech", "intake forms", "AI agents"]
+      min_points: 20       # applied server-side via numericFilters
+      min_age_hours: 12    # only fetch stories at least this old, so points have accrued
+
+  # ---------- Trade and specialist press (headline + summary only) ----------
+  - key: usni-news
+    name: USNI News
+    connector_type: rss
+    access_method: public_feed
+    tracks: [indopacific_defense]
+    cadence_minutes: 60
+    config: { url: https://news.usni.org/feed }
+
+  - key: breaking-defense
+    name: Breaking Defense
+    connector_type: rss
+    access_method: public_feed
+    tracks: [indopacific_defense, defense_acq]
+    cadence_minutes: 60
+    config: { url: https://breakingdefense.com/feed/ }
+
+  - key: the-diplomat
+    name: The Diplomat
+    connector_type: rss
+    access_method: public_feed
+    tracks: [indopacific_defense]
+    cadence_minutes: 120
+    config: { url: https://thediplomat.com/feed/ }
+
+  - key: war-on-the-rocks
+    name: War on the Rocks
+    connector_type: rss
+    access_method: public_feed
+    tracks: [indopacific_defense, leadership_workforce]
+    cadence_minutes: 360
+    config: { url: https://warontherocks.com/feed/ }
+
+  - key: ars-technica
+    name: Ars Technica
+    connector_type: rss
+    access_method: public_feed
+    tracks: [ai_tech]
+    cadence_minutes: 120
+    config: { url: https://feeds.arstechnica.com/arstechnica/index }
+
+  - key: techcrunch-ai
+    name: TechCrunch — AI
+    connector_type: rss
+    access_method: public_feed
+    tracks: [ai_tech, economy]
+    cadence_minutes: 120
+    config: { url: https://techcrunch.com/category/artificial-intelligence/feed/ }
+
+  - key: lawsites
+    name: LawSites (legal tech)
+    connector_type: rss
+    access_method: public_feed
+    tracks: [legal_investigations]
+    cadence_minutes: 360
+    config: { url: https://www.lawnext.com/feed }
+
+  - key: artificial-lawyer
+    name: Artificial Lawyer
+    connector_type: rss
+    access_method: public_feed
+    tracks: [legal_investigations]
+    cadence_minutes: 360
+    config: { url: https://www.artificiallawyer.com/feed/ }
+
+  # TODO in Task 0: find official feeds for a fintech trade outlet, a healthcare IT
+  # outlet, a Japan MoD / Japan-focused English source, and a cyber advisories feed
+  # (e.g., CISA advisories). Add them here once verified.
