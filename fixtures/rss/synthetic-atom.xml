@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SYNTHETIC FIXTURE: hand-written for tests. Not a real feed; example.invalid URLs. -->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Synthetic Atom fixture</title>
+  <entry>
+    <title>Atom fixture entry</title>
+    <link rel="alternate" href="https://fixture.example.invalid/atom-1"/>
+    <link rel="edit" href="https://fixture.example.invalid/edit/atom-1"/>
+    <id>urn:fixture:atom-1</id>
+    <updated>2026-11-06T09:30:00Z</updated>
+    <author><name>Fixture Writer</name></author>
+    <summary>Atom summary text.</summary>
+    <content type="html">FULL ATOM CONTENT THAT MUST NEVER BE STORED.</content>
+  </entry>
+</feed>

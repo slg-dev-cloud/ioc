@@ -1,14 +1,13 @@
 // Integration tests against a real Postgres + pgvector. Skipped when
 // TEST_DATABASE_URL is unset. The test database is wiped on every run.
-import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { eq, sql } from "drizzle-orm";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { schema } from "@ioc/shared";
-import { createDb, type Db } from "../src/db.js";
+import type { Db } from "../src/db.js";
 import { loadConfig, seed } from "../src/seed.js";
+import { freshDb, testDbUrl } from "./helpers/db.js";
 
-const url = process.env.TEST_DATABASE_URL;
+const url = testDbUrl;
 
 // Drizzle wraps driver errors; the Postgres message is on `cause`.
 async function expectPgError(p: Promise<unknown>, pattern: RegExp) {
@@ -16,20 +15,13 @@ async function expectPgError(p: Promise<unknown>, pattern: RegExp) {
   expect(err, "expected the query to fail").not.toBeNull();
   expect(`${err!.message}\n${err!.cause?.message ?? ""}`).toMatch(pattern);
 }
-const migrationsFolder = fileURLToPath(new URL("../../shared/drizzle", import.meta.url));
 
 describe.skipIf(!url)("database (M0)", () => {
   let db: Db;
   let end: () => Promise<void>;
 
   beforeAll(async () => {
-    const conn = createDb(url!);
-    db = conn.db;
-    end = () => conn.pool.end();
-    await db.execute(sql`drop schema if exists public cascade`);
-    await db.execute(sql`drop schema if exists drizzle cascade`);
-    await db.execute(sql`create schema public`);
-    await migrate(db, { migrationsFolder });
+    ({ db, end } = await freshDb());
   });
   afterAll(() => end?.());
 

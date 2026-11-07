@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC FIXTURE: hand-written for tests. Not a real feed; example.invalid URLs. -->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Synthetic fixture feed</title>
+    <link>https://fixture.example.invalid/</link>
+    <language>en-US</language>
+    <item>
+      <title>Fixture item &#8211; one</title>
+      <link>https://fixture.example.invalid/one?utm_source=rss&amp;id=7#comments</link>
+      <guid isPermaLink="false">fixture-1</guid>
+      <pubDate>Fri, 06 Nov 2026 12:00:00 +0000</pubDate>
+      <dc:creator><![CDATA[Fixture Author]]></dc:creator>
+      <description><![CDATA[<p>Short <b>summary</b> of fixture item one.</p>]]></description>
+      <content:encoded><![CDATA[<p>FULL ARTICLE BODY THAT MUST NEVER BE STORED.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Fixture item two (old)</title>
+      <link>https://fixture.example.invalid/two</link>
+      <pubDate>Mon, 02 Nov 2026 12:00:00 +0000</pubDate>
+      <description>Summary of an item older than the lookback window.</description>
+    </item>
+    <item>
+      <title></title>
+      <link>https://fixture.example.invalid/no-title</link>
+      <description>Item with no title; should be skipped as invalid.</description>
+    </item>
+  </channel>
+</rss>

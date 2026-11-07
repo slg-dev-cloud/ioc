@@ -28,6 +28,8 @@ sources:
     cadence_minutes: 30
     config:
       endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      rate_limit_group: gdelt     # GDELT allows 1 request / 5 s across all queries
+      min_interval_ms: 6000
       query: '(Taiwan OR "South China Sea" OR "East China Sea" OR Okinawa OR "Korean Peninsula" OR PLA) (military OR defense OR security)'
       mode: ArtList
       max_records: 75
@@ -42,6 +44,8 @@ sources:
     cadence_minutes: 60
     config:
       endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      rate_limit_group: gdelt     # GDELT allows 1 request / 5 s across all queries
+      min_interval_ms: 6000
       query: '("artificial intelligence" OR "AI model" OR "AI agents" OR "AI regulation")'
       mode: ArtList
       max_records: 75
@@ -56,6 +60,8 @@ sources:
     cadence_minutes: 60
     config:
       endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      rate_limit_group: gdelt     # GDELT allows 1 request / 5 s across all queries
+      min_interval_ms: 6000
       query: '("interest rates" OR inflation OR "central bank" OR tariffs OR "supply chain" OR "venture funding")'
       mode: ArtList
       max_records: 75
@@ -71,6 +77,8 @@ sources:
     priority: low
     config:
       endpoint: https://api.gdeltproject.org/api/v2/doc/doc
+      rate_limit_group: gdelt     # GDELT allows 1 request / 5 s across all queries
+      min_interval_ms: 6000
       query: '("military families" OR DoDEA OR "PCS move" OR "SOFA status" OR "base housing")'
       mode: ArtList
       max_records: 50
