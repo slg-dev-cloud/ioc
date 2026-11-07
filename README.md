@@ -5,7 +5,7 @@ Private, single-owner daily intelligence brief. Read `CLAUDE.md` and
 
 ## Local setup
 
-Requires Node 20+, pnpm 10, and PostgreSQL 16 with the pgvector extension.
+Requires Node 22+, pnpm 10, and PostgreSQL 16 with the pgvector extension.
 
 ```bash
 cp .env.example .env          # fill in DATABASE_URL, SESSION_SECRET

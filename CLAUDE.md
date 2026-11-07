@@ -6,7 +6,7 @@ Read `docs/PHASE1_SPEC.md` before writing code. It is the source of truth for Ph
 A private, single-owner intelligence system. It collects from lawful public sources, groups items into events, synthesizes findings that cite stored evidence, and delivers a daily brief at 08:00 Asia/Tokyo.
 
 ## Stack
-- Node 20+, TypeScript (strict), pnpm workspaces
+- Node 22+, TypeScript (strict), pnpm workspaces
 - `server/`: Fastify API, pg-boss workers and schedules
 - `web/`: React + Vite + Tailwind
 - `shared/`: Drizzle schema, zod contracts, shared types
