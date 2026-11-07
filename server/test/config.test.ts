@@ -8,9 +8,16 @@ describe("config files", () => {
     expect(cfg.profile.tracks.some((t) => t.id === "signals")).toBe(true);
   });
 
-  it("every source stays disabled until Task 0 verifies it", () => {
+  it("only sources verified in Task 0 are enabled", () => {
     const { sourcesFile } = loadConfig();
-    const enabled = sourcesFile.sources.filter((s) => (s.enabled ?? sourcesFile.defaults.enabled) && !s.terms_notes);
+    const enabled = sourcesFile.sources.filter((s) => s.enabled ?? sourcesFile.defaults.enabled);
+    expect(enabled.filter((s) => !s.terms_notes).map((s) => s.key)).toEqual([]);
+  });
+
+  it("sources whose terms or access controls forbid our use stay disabled", () => {
+    const { sourcesFile } = loadConfig();
+    const blocked = ["dod-contracts", "war-on-the-rocks", "breaking-defense", "the-diplomat", "ars-technica"];
+    const enabled = sourcesFile.sources.filter((s) => blocked.includes(s.key) && s.enabled);
     expect(enabled.map((s) => s.key)).toEqual([]);
   });
 

@@ -1,7 +1,8 @@
 # Task 0 — Source verification (spec §6.3)
 
 Run: 2026-11-07, from the Claude Code cloud sandbox (shared egress IP).
-**No source has been enabled.** Every entry in `config/sources.yaml` stays `enabled: false` until the owner approves.
+**Owner decision (2026-11-07):** 16 sources enabled: the 11 recommended, SAM.gov (stays `auth_required` until a key is set), and USNI, TechCrunch, LawSites, and Artificial Lawyer.
+Still disabled under CLAUDE.md rule 4: DoD contracts (access blocked), War on the Rocks (terms ban AI use), Breaking Defense (terms ban automated access), The Diplomat (AI rights reserved), Ars Technica (terms unread). Each can be revisited with written permission from the publisher.
 
 Method: each endpoint was requested once or twice with an honest user agent (`IOC-source-verification/0.1`). For every host, robots.txt was read and the terms page was fetched where reachable. Where a terms page could not be reached from the sandbox, that is stated; nothing below is assumed.
 
