@@ -27,5 +27,5 @@ DB integration tests run when `TEST_DATABASE_URL` is set. They wipe that databas
 ## Status
 
 - M0 (scaffold, schema, migrations, seed, auth, CI): done
-- Task 0 (source verification): see `docs/TASK0_SOURCE_VERIFICATION.md`
+- Task 0 (source verification): done, awaiting owner approval. See `docs/TASK0_SOURCE_VERIFICATION.md`. No source is enabled yet.
 - `pnpm collect`, `pnpm brief:dry`, `pnpm brief:send` are placeholders until M1, M5, and M6.

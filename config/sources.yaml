@@ -20,6 +20,7 @@ sources:
   # ---------- Broad global coverage ----------
   - key: gdelt-indopacific
     name: GDELT DOC API — Indo-Pacific security
+    terms_notes: "Task 0 (2026-11-07): works intermittently; 1 req/5s limit, shared across all GDELT sources. No excerpt in ArtList. Terms (via search): open use, must cite GDELT with link. Recommend enable as limited."
     connector_type: gdelt
     access_method: public_api
     tracks: [indopacific_defense]
@@ -32,6 +33,7 @@ sources:
 
   - key: gdelt-ai-tech
     name: GDELT DOC API — AI & technology
+    terms_notes: "Task 0 (2026-11-07): works intermittently; 1 req/5s limit, shared across all GDELT sources. No excerpt in ArtList. Terms (via search): open use, must cite GDELT with link. Recommend enable as limited."
     connector_type: gdelt
     access_method: public_api
     tracks: [ai_tech]
@@ -44,6 +46,7 @@ sources:
 
   - key: gdelt-economy
     name: GDELT DOC API — economy & markets
+    terms_notes: "Task 0 (2026-11-07): works intermittently; 1 req/5s limit, shared across all GDELT sources. No excerpt in ArtList. Terms (via search): open use, must cite GDELT with link. Recommend enable as limited."
     connector_type: gdelt
     access_method: public_api
     tracks: [economy]
@@ -56,6 +59,7 @@ sources:
 
   - key: gdelt-military-family
     name: GDELT DOC API — military family & quality of life
+    terms_notes: "Task 0 (2026-11-07): works intermittently; 1 req/5s limit, shared across all GDELT sources. No excerpt in ArtList. Terms (via search): open use, must cite GDELT with link. Recommend enable as limited."
     connector_type: gdelt
     access_method: public_api
     tracks: [family_life]
@@ -70,6 +74,7 @@ sources:
   # ---------- Government / primary sources ----------
   - key: federal-register-fin-reg
     name: Federal Register — financial regulators
+    terms_notes: "Task 0: works, no key; all agency slugs valid; abstract storable. US gov publication. Recommend enable."
     connector_type: federal_register
     access_method: public_api
     is_primary: true
@@ -81,6 +86,7 @@ sources:
 
   - key: federal-register-defense-tech
     name: Federal Register — defense, export controls, FTC, HHS
+    terms_notes: "Task 0: works, no key; all agency slugs valid; abstract storable. US gov publication. Recommend enable."
     connector_type: federal_register
     access_method: public_api
     is_primary: true
@@ -92,6 +98,7 @@ sources:
 
   - key: dod-contracts
     name: DoD daily contract announcements
+    terms_notes: "Task 0: every defense.gov URL (page, RSS index, robots.txt) returns Akamai 403. Unsupported (rule 4)."
     connector_type: html_page   # look for an official RSS feed first; respect robots.txt
     access_method: permitted_crawl
     is_primary: true
@@ -102,6 +109,7 @@ sources:
 
   - key: sam-gov-opportunities
     name: SAM.gov contract opportunities
+    terms_notes: "Task 0: needs api_key query param (never store or log). uiLink requires contracting-officer login. No keywords param; use title filter. Untested without key."
     connector_type: sam_gov
     access_method: public_api   # requires SAM_GOV_API_KEY
     is_primary: true
@@ -113,6 +121,7 @@ sources:
 
   - key: cisa-kev
     name: CISA Known Exploited Vulnerabilities
+    terms_notes: "Task 0: works; 1,769 entries; fields match spec. US gov work. Recommend enable."
     connector_type: cisa_kev
     access_method: public_feed
     is_primary: true
@@ -125,6 +134,7 @@ sources:
 
   - key: fed-press
     name: Federal Reserve press releases
+    terms_notes: "Task 0: works; summaries only. Public domain, cite the Board (federalreserve.gov/disclaimer.htm). Recommend enable."
     connector_type: rss
     access_method: public_feed
     is_primary: true
@@ -136,6 +146,7 @@ sources:
   # ---------- Signals preview (Phase 1) ----------
   - key: cfpb-complaints
     name: CFPB Consumer Complaint Database
+    terms_notes: "Task 0: works; aggregations available. Terms page unreachable from sandbox. Aggregates only. Recommend enable."
     connector_type: cfpb_complaints
     access_method: public_api
     is_primary: true
@@ -151,6 +162,7 @@ sources:
 
   - key: cpsc-recalls
     name: CPSC recalls
+    terms_notes: "Task 0: works; RecallID and public URL present. Terms page unreachable from sandbox. Recommend enable."
     connector_type: cpsc_recalls
     access_method: public_api
     is_primary: true
@@ -163,6 +175,7 @@ sources:
 
   - key: hn-search
     name: Hacker News (Algolia search API)
+    terms_notes: "Task 0: works; points filter OK server-side. Queries match loosely; needs phrase or title-only search. ~10k req/hr/IP (third-party). Recommend enable after query fix."
     connector_type: hn_algolia
     access_method: public_api
     tracks: [signals, ai_tech]
@@ -176,6 +189,7 @@ sources:
   # ---------- Trade and specialist press (headline + summary only) ----------
   - key: usni-news
     name: USNI News
+    terms_notes: "Task 0: feed works, contains full text (store summary only). robots: ai-train=no, ai-input unset; blocks ClaudeBot/anthropic-ai crawlers. Terms page 403. Owner decision."
     connector_type: rss
     access_method: public_feed
     tracks: [indopacific_defense]
@@ -184,6 +198,7 @@ sources:
 
   - key: breaking-defense
     name: Breaking Defense
+    terms_notes: "Task 0: ToS prohibits robots/automatic access and storing material without written consent. Do not enable without permission."
     connector_type: rss
     access_method: public_feed
     tracks: [indopacific_defense, defense_acq]
@@ -192,6 +207,7 @@ sources:
 
   - key: the-diplomat
     name: The Diplomat
+    terms_notes: "Task 0: robots blocks anthropic-ai; terms (unofficial copy) reserve TDM/ML/AI-development rights. Do not enable without permission."
     connector_type: rss
     access_method: public_feed
     tracks: [indopacific_defense]
@@ -200,6 +216,7 @@ sources:
 
   - key: war-on-the-rocks
     name: War on the Rocks
+    terms_notes: "Task 0: ToS explicitly prohibits LLM access, summarization, embeddings, RAG. Unsupported."
     connector_type: rss
     access_method: public_feed
     tracks: [indopacific_defense, leadership_workforce]
@@ -208,6 +225,7 @@ sources:
 
   - key: ars-technica
     name: Ars Technica
+    terms_notes: "Task 0: feed works, full text. Conde Nast terms unreachable; reportedly bar AI use. Do not enable until terms are read."
     connector_type: rss
     access_method: public_feed
     tracks: [ai_tech]
@@ -216,6 +234,7 @@ sources:
 
   - key: techcrunch-ai
     name: TechCrunch — AI
+    terms_notes: "Task 0: RSS terms allow display with attribution and link, no modification; ToS personal noncommercial; robots blocks AI crawlers. Owner decision."
     connector_type: rss
     access_method: public_feed
     tracks: [ai_tech, economy]
@@ -224,6 +243,7 @@ sources:
 
   - key: lawsites
     name: LawSites (legal tech)
+    terms_notes: "Task 0: feed works; robots permissive; no terms page found. Owner decision."
     connector_type: rss
     access_method: public_feed
     tracks: [legal_investigations]
@@ -232,6 +252,7 @@ sources:
 
   - key: artificial-lawyer
     name: Artificial Lawyer
+    terms_notes: "Task 0: feed works (10 items); robots permissive; no terms page found. Owner decision."
     connector_type: rss
     access_method: public_feed
     tracks: [legal_investigations]
