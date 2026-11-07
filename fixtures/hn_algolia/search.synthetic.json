@@ -1,0 +1,39 @@
+{
+ "_fixture_note": "SYNTHETIC FIXTURE: hand-written in the shape of the HN Algolia API. Not real posts.",
+ "hits": [
+  {
+   "objectID": "900001",
+   "title": "Ask HN: Fixture question about open banking",
+   "url": null,
+   "story_text": "<p>Synthetic <i>question</i> text.</p>",
+   "author": "fixture_user",
+   "points": 42,
+   "num_comments": 7,
+   "created_at": "2026-11-05T10:00:00Z",
+   "created_at_i": 1793872800,
+   "_highlightResult": {
+    "title": {
+     "value": "x"
+    }
+   },
+   "_tags": [
+    "story",
+    "ask_hn"
+   ]
+  },
+  {
+   "objectID": "900002",
+   "title": "Fixture link post",
+   "url": "https://fixture.example.invalid/post?utm_source=hn",
+   "author": "fixture_user2",
+   "points": 120,
+   "num_comments": 30,
+   "created_at": "2026-11-05T12:00:00Z",
+   "created_at_i": 1793880000,
+   "_tags": [
+    "story"
+   ]
+  }
+ ],
+ "nbHits": 2
+}

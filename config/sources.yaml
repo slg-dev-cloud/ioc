@@ -163,7 +163,7 @@ sources:
   # ---------- Signals preview (Phase 1) ----------
   - key: cfpb-complaints
     name: CFPB Consumer Complaint Database
-    terms_notes: "Task 0: works; aggregations available. Terms page unreachable from sandbox. Aggregates only. Recommend enable."
+    terms_notes: "Task 0: works; aggregations available. License CC0 (API _meta.license, verified M2). Aggregates only."
     enabled: true
     connector_type: cfpb_complaints
     access_method: public_api
@@ -204,6 +204,7 @@ sources:
       endpoint: https://hn.algolia.com/api/v1/search_by_date
       queries: ["Ask HN alternative to", "frustrated with", "open banking", "legal tech", "intake forms", "AI agents"]
       min_points: 20       # applied server-side via numericFilters
+      phrase_match: true   # exact phrase over title + post text (plain queries matched unrelated posts)
       min_age_hours: 12    # only fetch stories at least this old, so points have accrued
 
   # ---------- Trade and specialist press (headline + summary only) ----------

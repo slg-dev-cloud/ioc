@@ -65,7 +65,7 @@ export async function runSource(db: Db, sourceKey: string, opts: RunOptions = {}
   if (!source) throw new SourceNotRunnableError(`unknown source: ${sourceKey}`);
   if (!source.enabled && !opts.force) throw new SourceNotRunnableError(`source ${sourceKey} is disabled (pass --force to run anyway)`);
   const connector = getConnector(source.connectorType);
-  if (!connector) throw new SourceNotRunnableError(`no connector for type ${source.connectorType} yet (arrives in M2)`);
+  if (!connector) throw new SourceNotRunnableError(`no connector for type ${source.connectorType}`);
 
   await db.insert(sourceState).values({ sourceId: source.id }).onConflictDoNothing();
   const [state] = await db.select().from(sourceState).where(eq(sourceState.sourceId, source.id));
@@ -102,7 +102,10 @@ export async function runSource(db: Db, sourceKey: string, opts: RunOptions = {}
         ctx.log("skipped invalid item", { error: err instanceof Error ? err.message : String(err) });
         continue;
       }
-      if (item.publishedAt && item.publishedAt < since) {
+      // Date-only items (midnight of their day) are compared a day earlier, so an
+      // item dated today isn't dropped because the window opened mid-day.
+      const floor = item.datePrecision === "day" ? new Date(since.getTime() - 86_400_000) : since;
+      if (item.publishedAt && item.publishedAt < floor) {
         itemsSkippedOld++;
         continue;
       }
@@ -126,6 +129,7 @@ export async function runSource(db: Db, sourceKey: string, opts: RunOptions = {}
           author: item.author ?? null,
           language: item.language ?? null,
           publishedAt: item.publishedAt ?? null,
+          eventOccurredAt: item.eventOccurredAt ?? null,
           fingerprint: fingerprint({ canonicalUrl: url, sourceKey: source.key, sourceItemId: item.sourceItemId }),
           collectionMethod: opts.collectionMethod ?? "scheduled",
           permittedUse: String((source.config as Record<string, unknown>).permitted_use ?? "headline_excerpt"),

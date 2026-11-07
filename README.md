@@ -29,6 +29,7 @@ DB integration tests run when `TEST_DATABASE_URL` is set. They wipe that databas
 - M0 (scaffold, schema, migrations, seed, auth, CI): done
 - Task 0 (source verification): done. 16 sources enabled. See `docs/TASK0_SOURCE_VERIFICATION.md`.
 - M1 (connector runner; RSS, Federal Register, GDELT connectors): done
+- M2 (CISA KEV, CPSC, CFPB weekly aggregates, Hacker News, SAM.gov, html_page): done. SAM.gov stays `auth_required` until `SAM_GOV_API_KEY` is set.
 - Embedding provider: Voyage AI (key and model chosen in M3)
 - `pnpm brief:dry` and `pnpm brief:send` are placeholders until M5 and M6.
 

@@ -126,14 +126,49 @@ describe.skipIf(!testDbUrl)("connector runner (M1)", () => {
     expect(r!.connector_runs.itemsNew).toBe(1);
   });
 
-  it("refuses disabled sources and unbuilt connectors without writing a run", async () => {
+  it("keeps date-only items dated on the day the window opens", async () => {
+    // Window opens 2026-11-06 06:00 UTC; a document dated 2026-11-06 (midnight Eastern = 05:00 UTC) must be kept.
+    const key = await addSource({ endpoint: "https://fr.fixture.test/docs.json", agencies: ["x"] });
+    await db.update(schema.sources).set({ connectorType: "federal_register" }).where(eq(schema.sources.key, key));
+    await db.insert(schema.sourceState).values({ sourceId: (await sourceRow(key)).id, watermark: { lastSeen: "2026-11-06T07:00:00.000Z" } });
+    const body = { results: [
+      { title: "Fixture doc dated window day", html_url: "https://fr.fixture.test/d/today", publication_date: "2026-11-06" },
+      { title: "Fixture doc two days earlier", html_url: "https://fr.fixture.test/d/old", publication_date: "2026-11-04" },
+    ], next_page_url: null };
+    const res = await run(key, [["https://fr.fixture.test/docs.json", { body: JSON.stringify(body) }]]);
+    expect(res).toMatchObject({ status: "active", itemsNew: 1, itemsSkippedOld: 1 });
+  });
+
+  it("stores aggregates with an event date and no publish date (CFPB)", async () => {
+    const key = await addSource({ endpoint: "https://cfpb.fixture.test/api/", products: ["Checking or savings account"], weeks_back: 1 });
+    await db.update(schema.sources).set({ connectorType: "cfpb_complaints" }).where(eq(schema.sources.key, key));
+    const routes: Route[] = [["https://cfpb.fixture.test/api/", { body: fixture("cfpb_complaints/week.recorded.json") }]];
+    expect(await run(key, routes)).toMatchObject({ status: "active", itemsNew: 1 });
+    expect(await run(key, routes)).toMatchObject({ status: "active", itemsNew: 0 });
+    const [ev] = await db.select().from(schema.evidenceRecords).where(eq(schema.evidenceRecords.sourceId, (await sourceRow(key)).id));
+    expect(ev!.sourceItemId).toBe("Checking or savings account:2026-W43");
+    expect(ev!.publishedAt).toBeNull();
+    expect(ev!.eventOccurredAt!.toISOString()).toBe("2026-10-19T00:00:00.000Z");
+  });
+
+  it("marks a source with a missing API key as auth_required (SAM.gov)", async () => {
+    const saved = process.env.SAM_GOV_API_KEY;
+    delete process.env.SAM_GOV_API_KEY;
+    try {
+      const key = await addSource({ endpoint: "https://sam.fixture.test/search", keywords: ["x"] });
+      await db.update(schema.sources).set({ connectorType: "sam_gov" }).where(eq(schema.sources.key, key));
+      const res = await run(key, []);
+      expect(res).toMatchObject({ status: "auth_required", sourceStatus: "auth_required" });
+      expect(res.error).toMatch(/SAM_GOV_API_KEY is not set/);
+    } finally {
+      if (saved !== undefined) process.env.SAM_GOV_API_KEY = saved;
+    }
+  });
+
+  it("refuses disabled sources without writing a run", async () => {
     const key = await addSource({ url: FEED }, false);
     await expect(run(key, [])).rejects.toBeInstanceOf(SourceNotRunnableError);
-    const kev = await addSource({});
-    await db.update(schema.sources).set({ connectorType: "cisa_kev" }).where(eq(schema.sources.key, kev));
-    await expect(run(kev, [])).rejects.toThrow(/M2/);
     expect(await runsFor(key)).toHaveLength(0);
-    expect(await runsFor(kev)).toHaveLength(0);
   });
 
   it("never stores API keys in run errors", async () => {

@@ -57,6 +57,7 @@ export const federalRegisterConnector: Connector = {
       excerpt: makeExcerpt(typeof doc.abstract === "string" ? doc.abstract : null),
       author: agencies.join("; ") || null,
       publishedAt: date ? zonedMidnight(date, FR_TZ) : null,
+      datePrecision: "day" as const,
       language: "en",
       raw: doc,
     };

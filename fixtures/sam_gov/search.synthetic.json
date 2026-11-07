@@ -1,0 +1,27 @@
+{
+ "_fixture_note": "SYNTHETIC FIXTURE: hand-written using field names from the GSA Get Opportunities API docs. Not real notices.",
+ "totalRecords": 2,
+ "limit": 1000,
+ "offset": 0,
+ "opportunitiesData": [
+  {
+   "noticeId": "fixture0001",
+   "title": "Fixture training management system support",
+   "solicitationNumber": "FIXTURE-SOL-1",
+   "fullParentPathName": "FIXTURE.AGENCY",
+   "postedDate": "2026-11-05",
+   "type": "Sources Sought",
+   "typeOfSetAsideDescription": null,
+   "responseDeadLine": "2026-12-01T17:00:00-05:00",
+   "naicsCode": "541511",
+   "uiLink": "https://sam.example.invalid/opp/fixture0001/view",
+   "description": "https://api.example.invalid/prod/opportunities/v1/noticedesc?noticeid=fixture0001"
+  },
+  {
+   "noticeId": "fixture0002",
+   "title": "Fixture notice without a UI link",
+   "postedDate": "2026-11-05",
+   "uiLink": null
+  }
+ ]
+}

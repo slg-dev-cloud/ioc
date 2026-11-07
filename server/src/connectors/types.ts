@@ -21,6 +21,10 @@ export interface NormalizedItem {
   excerpt?: string | null;
   author?: string | null;
   publishedAt?: Date | null;
+  /** "day" when the source gives only a calendar date (publishedAt is that day's midnight). */
+  datePrecision?: "day";
+  /** When the underlying event happened, if different from publication (e.g. a CFPB week). */
+  eventOccurredAt?: Date | null;
   language?: string | null;
   /** Stored in evidence_raw. Never full article text. */
   raw: unknown;

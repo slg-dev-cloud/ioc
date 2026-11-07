@@ -88,7 +88,7 @@ Likely enabled set once approved: 4 GDELT, 2 Federal Register, CISA KEV, Fed pre
 - RSS, 20 items, summaries only. Terms verified at federalreserve.gov/disclaimer.htm: "Unless otherwise indicated, information on Board's website is in the public domain and may be copied and distributed without permission. Please cite to the Board as the source of the information."
 
 ### CFPB complaints
-- Search API works. Aggregations are available. Terms page (cfpb.github.io) isn't reachable from the sandbox. Phase 1 stores aggregates only (spec §6.2.1).
+- Search API works. Aggregations are available. **License: CC0**, stated in every API response (`_meta.license`), verified during M2. Date filters are inclusive at both ends. Phase 1 stores aggregates only (spec §6.2.1).
 
 ### CPSC recalls
 - `https://www.saferproducts.gov/RestWebServices/Recall?format=json&RecallDateStart=…` works. robots.txt on saferproducts.gov returns 403. API terms on cpsc.gov aren't reachable from the sandbox.

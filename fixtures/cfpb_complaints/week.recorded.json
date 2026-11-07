@@ -1,0 +1,243 @@
+{
+ "hits": {
+  "total": {
+   "value": 1889,
+   "relation": "eq"
+  },
+  "max_score": null,
+  "hits": []
+ },
+ "aggregations": {
+  "issue": {
+   "doc_count": 1889,
+   "issue": {
+    "doc_count_error_upper_bound": 0,
+    "sum_other_doc_count": 0,
+    "buckets": [
+     {
+      "key": "Managing an account",
+      "doc_count": 1103,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Problem using a debit or ATM card",
+         "doc_count": 341
+        },
+        {
+         "key": "Deposits and withdrawals",
+         "doc_count": 339
+        },
+        {
+         "key": "Funds not handled or disbursed as instructed",
+         "doc_count": 123
+        },
+        {
+         "key": "Problem making or receiving payments",
+         "doc_count": 102
+        },
+        {
+         "key": "Problem accessing account",
+         "doc_count": 77
+        },
+        {
+         "key": "Banking errors",
+         "doc_count": 73
+        },
+        {
+         "key": "Cashing a check",
+         "doc_count": 20
+        },
+        {
+         "key": "Fee problem",
+         "doc_count": 17
+        },
+        {
+         "key": "Deposits or withdrawals",
+         "doc_count": 9
+        },
+        {
+         "key": "Problem with renewal",
+         "doc_count": 2
+        }
+       ]
+      }
+     },
+     {
+      "key": "Problem with a lender or other company charging your account",
+      "doc_count": 259,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Transaction was not authorized",
+         "doc_count": 202
+        },
+        {
+         "key": "Money was taken from your account on the wrong day or for the wrong amount",
+         "doc_count": 41
+        },
+        {
+         "key": "Can't stop withdrawals from your account",
+         "doc_count": 16
+        }
+       ]
+      }
+     },
+     {
+      "key": "Closing an account",
+      "doc_count": 242,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Company closed your account",
+         "doc_count": 105
+        },
+        {
+         "key": "Funds not received from closed account",
+         "doc_count": 98
+        },
+        {
+         "key": "Can't close your account",
+         "doc_count": 37
+        },
+        {
+         "key": "Fees charged for closing account",
+         "doc_count": 2
+        }
+       ]
+      }
+     },
+     {
+      "key": "Opening an account",
+      "doc_count": 153,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Unable to open an account",
+         "doc_count": 69
+        },
+        {
+         "key": "Account opened without my consent or knowledge",
+         "doc_count": 43
+        },
+        {
+         "key": "Didn't receive terms that were advertised",
+         "doc_count": 35
+        },
+        {
+         "key": "Confusing or missing disclosures",
+         "doc_count": 6
+        }
+       ]
+      }
+     },
+     {
+      "key": "Problem caused by your funds being low",
+      "doc_count": 114,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Overdrafts and overdraft fees",
+         "doc_count": 71
+        },
+        {
+         "key": "Non-sufficient funds and associated fees",
+         "doc_count": 21
+        },
+        {
+         "key": "Late or other fees",
+         "doc_count": 13
+        },
+        {
+         "key": "Bounced checks or returned payments",
+         "doc_count": 9
+        }
+       ]
+      }
+     },
+     {
+      "key": "Problem with a company's investigation into an existing problem",
+      "doc_count": 11,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Their investigation did not fix an error on your report",
+         "doc_count": 7
+        },
+        {
+         "key": "Difficulty submitting a dispute or getting information about a dispute over the phone",
+         "doc_count": 3
+        },
+        {
+         "key": "Was not notified of investigation status or results",
+         "doc_count": 1
+        }
+       ]
+      }
+     },
+     {
+      "key": "Incorrect information on your report",
+      "doc_count": 5,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Account information incorrect",
+         "doc_count": 4
+        },
+        {
+         "key": "Information belongs to someone else",
+         "doc_count": 1
+        }
+       ]
+      }
+     },
+     {
+      "key": "Improper use of your report",
+      "doc_count": 1,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": [
+        {
+         "key": "Reporting company used your report improperly",
+         "doc_count": 1
+        }
+       ]
+      }
+     },
+     {
+      "key": "Problem with fraud alerts or security freezes",
+      "doc_count": 1,
+      "sub_issue.raw": {
+       "doc_count_error_upper_bound": 0,
+       "sum_other_doc_count": 0,
+       "buckets": []
+      }
+     }
+    ]
+   }
+  }
+ },
+ "_meta": {
+  "license": "CC0",
+  "last_updated": "2026-11-06T12:00:00-05:00",
+  "last_indexed": "2026-11-06T12:00:00-05:00",
+  "total_record_count": 18965764,
+  "is_data_stale": false,
+  "has_data_issue": false,
+  "break_points": {}
+ }
+}
