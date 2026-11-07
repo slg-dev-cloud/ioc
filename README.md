@@ -31,6 +31,7 @@ DB integration tests run when `TEST_DATABASE_URL` is set. They wipe that databas
 - M1 (connector runner; RSS, Federal Register, GDELT connectors): done
 - M2 (CISA KEV, CPSC, CFPB weekly aggregates, Hacker News, SAM.gov, html_page): done. SAM.gov stays `auth_required` until `SAM_GOV_API_KEY` is set.
 - M3 (LLM client, cost logging, classification, embeddings, relevance gate): code done and tested offline; the live 200-item run waits on `ANTHROPIC_API_KEY` and the Voyage key/model
+- M4 (event clustering, significance): code done and tested offline; the live 50-event spot check waits on real embeddings (M3 keys)
 - `pnpm brief:dry` and `pnpm brief:send` are placeholders until M5 and M6.
 
 ## Analysis
@@ -38,6 +39,8 @@ DB integration tests run when `TEST_DATABASE_URL` is set. They wipe that databas
 ```bash
 pnpm classify                # classify unclassified evidence with MODEL_CLASSIFY (batches of 25)
 pnpm embed                   # embed items that pass the relevance gate; marks near-duplicates
+pnpm cluster                 # group embedded items into events; refresh status and significance
+pnpm cluster -- --report 50  # print the top 50 events with their items, for spot checks
 ```
 
 Every model call writes an `llm_calls` row (tokens, cost, purpose). Calls stop when

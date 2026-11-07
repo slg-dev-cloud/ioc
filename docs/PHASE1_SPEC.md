@@ -488,6 +488,14 @@ significance = maxImportance * 0.45 + maxRelevance * 0.35
 
 The weights live in the `ranking` setting (seeded from `profile.yaml`) and should be tuned after the first week using feedback.
 
+Implementation notes (1.1, M4):
+- **Item time** is `published_at`, or `retrieved_at` when there is none (e.g. CFPB weekly aggregates).
+- **`ageHours`** is hours since the event's latest item (`last_seen_at`), so a story that keeps developing doesn't decay.
+- **Shared entity** means a shared organization, person, government, or product. Locations don't count: a shared country alone would merge unrelated stories.
+- **Distinct sources** count hosts with a leading `www.` removed.
+- Items with no tracks never join an event (step 1 needs track overlap); each becomes its own event.
+- One cluster run at a time (Postgres advisory lock).
+
 ### 7.3 Synthesis (MODEL_SYNTHESIZE, one call per track)
 **Selection:**
 - Events active in the brief window, ordered by significance.
@@ -674,3 +682,4 @@ GET/PUT /api/settings
 7. **Brief template.** Removed the unused `fold_into`. The `signals` track renders only in Signals (preview). Each finding shows its full card once. Added `findings.watchlist_hits` to drive Your Ventures.
 8. **Docs.** `MASTER_BRIEF.md` is marked optional, since it is not in the repo yet.
 9. **Structured outputs (M3).** LLM calls use `output_config.format` instead of forced tool use, which Claude Sonnet 5.5 rejects. Embedding calls are logged in `llm_calls` with purpose `embed` and count toward the daily budget. A model with no price in `model_pricing` cannot be called.
+10. **Clustering details (M4).** Defined item time, `ageHours`, and distinct-source hosts; locations don't count as shared entities (§7.2 implementation notes).

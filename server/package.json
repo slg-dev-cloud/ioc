@@ -13,7 +13,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run",
     "classify": "tsx --env-file-if-exists=../.env src/scripts/classify.ts",
-    "embed": "tsx --env-file-if-exists=../.env src/scripts/embed.ts"
+    "embed": "tsx --env-file-if-exists=../.env src/scripts/embed.ts",
+    "cluster": "tsx --env-file-if-exists=../.env src/scripts/cluster.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

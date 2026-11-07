@@ -18,7 +18,8 @@
     "brief:dry": "pnpm --filter @ioc/server brief:dry",
     "brief:send": "pnpm --filter @ioc/server brief:send",
     "classify": "pnpm --filter @ioc/server classify",
-    "embed": "pnpm --filter @ioc/server embed"
+    "embed": "pnpm --filter @ioc/server embed",
+    "cluster": "pnpm --filter @ioc/server cluster"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
