@@ -43,7 +43,7 @@ export class LlmStopError extends Error {
 }
 
 export interface StructuredRequest<T> {
-  purpose: Exclude<LlmPurpose, "repair" | "embed">;
+  purpose: Exclude<LlmPurpose, "embed">;
   model: string;
   /** Stable instructions; cached with cache_control. */
   system: string;

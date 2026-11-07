@@ -240,6 +240,7 @@ export const briefings = pgTable("briefings", {
   markdown: text("markdown"),
   html: text("html"),
   coverage: jsonb("coverage").notNull(),    // per-source status for the window
+  editor: jsonb("editor"),                  // editor pass output (§7.4); added in 1.1
   windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
   windowEnd: timestamp("window_end", { withTimezone: true }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),

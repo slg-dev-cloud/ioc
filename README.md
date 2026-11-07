@@ -32,7 +32,8 @@ DB integration tests run when `TEST_DATABASE_URL` is set. They wipe that databas
 - M2 (CISA KEV, CPSC, CFPB weekly aggregates, Hacker News, SAM.gov, html_page): done. SAM.gov stays `auth_required` until `SAM_GOV_API_KEY` is set.
 - M3 (LLM client, cost logging, classification, embeddings, relevance gate): code done and tested offline; the live 200-item run waits on `ANTHROPIC_API_KEY` and the Voyage key/model
 - M4 (event clustering, significance): code done and tested offline; the live 50-event spot check waits on real embeddings (M3 keys)
-- `pnpm brief:dry` and `pnpm brief:send` are placeholders until M5 and M6.
+- M5 (synthesis, validator, editor pass, `pnpm brief:dry`): code done and tested offline; the live dry-run brief waits on the keys
+- `pnpm brief:send` is a placeholder until M6.
 
 ## Analysis
 
@@ -41,7 +42,13 @@ pnpm classify                # classify unclassified evidence with MODEL_CLASSIF
 pnpm embed                   # embed items that pass the relevance gate; marks near-duplicates
 pnpm cluster                 # group embedded items into events; refresh status and significance
 pnpm cluster -- --report 50  # print the top 50 events with their items, for spot checks
+pnpm brief:dry -- --date YYYY-MM-DD   # build and store a brief without delivering it; prints the citation check
 ```
+
+Every finding passes the code validator (spec §7.3) before it is stored: citations must
+resolve, at least one item must support it, facts need two sources or a primary one
+(otherwise they become allegations), and every number must appear in the cited items.
+Rejections are recorded in `audit_events`.
 
 Every model call writes an `llm_calls` row (tokens, cost, purpose). Calls stop when
 the day's spend reaches the `budget` setting; at 80%, low-priority sources are skipped.

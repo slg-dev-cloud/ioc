@@ -151,6 +151,7 @@ export const briefings = pgTable("briefings", {
   markdown: text("markdown"),
   html: text("html"),
   coverage: jsonb("coverage").notNull(),
+  editor: jsonb("editor"),                  // editor pass output (spec §7.4), finding ids resolved
   windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
   windowEnd: timestamp("window_end", { withTimezone: true }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),

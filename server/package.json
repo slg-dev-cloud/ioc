@@ -8,7 +8,7 @@
     "seed": "tsx --env-file-if-exists=../.env src/scripts/seed.ts",
     "hash-password": "tsx src/scripts/hash-password.ts",
     "collect": "tsx --env-file-if-exists=../.env src/scripts/collect.ts",
-    "brief:dry": "tsx --env-file-if-exists=../.env src/scripts/not-yet.ts brief:dry M5",
+    "brief:dry": "tsx --env-file-if-exists=../.env src/scripts/brief-dry.ts",
     "brief:send": "tsx --env-file-if-exists=../.env src/scripts/not-yet.ts brief:send M6",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run",
