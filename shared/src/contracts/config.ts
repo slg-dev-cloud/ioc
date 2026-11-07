@@ -64,10 +64,15 @@ export const RankingSchema = z.object({
   }).strict(),
 }).strict();
 
+// USD per million tokens. Cache prices default to 0.1x (read) and 1.25x (5-minute write) of input.
 export const ModelPriceSchema = z.object({
   input_per_mtok: z.number().nonnegative(),
   output_per_mtok: z.number().nonnegative(),
+  cache_read_per_mtok: z.number().nonnegative().optional(),
+  cache_write_per_mtok: z.number().nonnegative().optional(),
+  source: z.string().optional(),
 }).strict();
+export type ModelPrice = z.infer<typeof ModelPriceSchema>;
 
 export const ProfileFileSchema = z.object({
   owner: z.object({

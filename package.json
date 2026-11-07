@@ -16,7 +16,9 @@
     "lint": "eslint .",
     "collect": "pnpm --filter @ioc/server collect",
     "brief:dry": "pnpm --filter @ioc/server brief:dry",
-    "brief:send": "pnpm --filter @ioc/server brief:send"
+    "brief:send": "pnpm --filter @ioc/server brief:send",
+    "classify": "pnpm --filter @ioc/server classify",
+    "embed": "pnpm --filter @ioc/server embed"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

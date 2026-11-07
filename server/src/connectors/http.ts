@@ -183,3 +183,16 @@ export function limiterFor(config: Record<string, unknown>, key: string): { limi
     minIntervalMs: Math.max(fromRate, explicit),
   };
 }
+
+let sharedDispatcher: Dispatcher | undefined;
+/**
+ * fetch for API calls that aren't collection (embeddings, email): proxy-aware,
+ * no robots check. Collection must use HttpClient.
+ */
+export function apiFetch(url: string, init: RequestInit): Promise<Response> {
+  if (process.env.HTTPS_PROXY || process.env.https_proxy) {
+    sharedDispatcher ??= new EnvHttpProxyAgent();
+    return undiciFetch(url, { ...(init as object), dispatcher: sharedDispatcher } as Parameters<typeof undiciFetch>[1]) as unknown as Promise<Response>;
+  }
+  return fetch(url, init);
+}

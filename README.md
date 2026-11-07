@@ -30,8 +30,19 @@ DB integration tests run when `TEST_DATABASE_URL` is set. They wipe that databas
 - Task 0 (source verification): done. 16 sources enabled. See `docs/TASK0_SOURCE_VERIFICATION.md`.
 - M1 (connector runner; RSS, Federal Register, GDELT connectors): done
 - M2 (CISA KEV, CPSC, CFPB weekly aggregates, Hacker News, SAM.gov, html_page): done. SAM.gov stays `auth_required` until `SAM_GOV_API_KEY` is set.
-- Embedding provider: Voyage AI (key and model chosen in M3)
+- M3 (LLM client, cost logging, classification, embeddings, relevance gate): code done and tested offline; the live 200-item run waits on `ANTHROPIC_API_KEY` and the Voyage key/model
 - `pnpm brief:dry` and `pnpm brief:send` are placeholders until M5 and M6.
+
+## Analysis
+
+```bash
+pnpm classify                # classify unclassified evidence with MODEL_CLASSIFY (batches of 25)
+pnpm embed                   # embed items that pass the relevance gate; marks near-duplicates
+```
+
+Every model call writes an `llm_calls` row (tokens, cost, purpose). Calls stop when
+the day's spend reaches the `budget` setting; at 80%, low-priority sources are skipped.
+A model with no entry in the `model_pricing` setting cannot be called.
 
 ## Collecting
 

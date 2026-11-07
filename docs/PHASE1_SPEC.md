@@ -324,7 +324,7 @@ export const feedback = pgTable("feedback", {
 
 export const llmCalls = pgTable("llm_calls", {
   id: uuid("id").primaryKey().defaultRandom(),
-  purpose: text("purpose").notNull(),        // classify | synthesize | edit | repair
+  purpose: text("purpose").notNull(),        // classify | synthesize | edit | repair | embed
   model: text("model").notNull(),
   inputTokens: integer("input_tokens").notNull(),
   outputTokens: integer("output_tokens").notNull(),
@@ -453,7 +453,7 @@ Record the findings in each entry's `terms_notes` in `config/sources.yaml` (the 
 
 ## 7. Analysis pipeline
 
-All LLM calls use tool-use with a JSON schema matching a zod contract. Outputs that fail zod validation get one repair call (purpose `repair`) with the error list. On a second failure, the item is logged and skipped.
+All LLM calls use structured outputs (`output_config.format`, a JSON schema generated from the zod contract) and validate the result with that zod schema. Outputs that fail validation get one repair call (purpose `repair`) with the error list. On a second failure, the item is logged and skipped. (1.0 said "tool-use"; forced `tool_choice` is rejected by Claude Sonnet 5.5, so structured outputs replace it with the same guarantee.)
 
 ### 7.1 Classification (MODEL_CLASSIFY, batched)
 **Input:** up to 25 items as `{id, title, excerpt, source_name, published_at}`, plus the track definitions (`tracks` table) and watchlist entities as `{id, name, keywords}` (`watchlist_entities` table). Both are read from the database at the start of each batch.
@@ -673,3 +673,4 @@ GET/PUT /api/settings
 6. **Validator scope.** The number check now covers every finding text field and the editor output, with defined normalization.
 7. **Brief template.** Removed the unused `fold_into`. The `signals` track renders only in Signals (preview). Each finding shows its full card once. Added `findings.watchlist_hits` to drive Your Ventures.
 8. **Docs.** `MASTER_BRIEF.md` is marked optional, since it is not in the repo yet.
+9. **Structured outputs (M3).** LLM calls use `output_config.format` instead of forced tool use, which Claude Sonnet 5.5 rejects. Embedding calls are logged in `llm_calls` with purpose `embed` and count toward the daily budget. A model with no price in `model_pricing` cannot be called.

@@ -11,9 +11,12 @@
     "brief:dry": "tsx --env-file-if-exists=../.env src/scripts/not-yet.ts brief:dry M5",
     "brief:send": "tsx --env-file-if-exists=../.env src/scripts/not-yet.ts brief:send M6",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "classify": "tsx --env-file-if-exists=../.env src/scripts/classify.ts",
+    "embed": "tsx --env-file-if-exists=../.env src/scripts/embed.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
     "@fastify/cookie": "^11.1.5",
     "@fastify/rate-limit": "^11.2.2",
     "@fastify/secure-session": "^8.4.2",

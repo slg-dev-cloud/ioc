@@ -124,9 +124,19 @@ ranking:
 budget:
   daily_llm_usd: 5
 
-# USD per million tokens, used to compute llm_calls.cost_usd.
-# Fill in from Anthropic's current pricing page before M3; left empty on purpose
-# rather than guessed. Keys must match the MODEL_* env values.
-model_pricing: {}
-#  claude-haiku-5-5:  { input_per_mtok: , output_per_mtok: }
-#  claude-sonnet-5-5: { input_per_mtok: , output_per_mtok: }
+# USD per million tokens, used to compute llm_calls.cost_usd. Keys must match the
+# MODEL_* / EMBEDDING_MODEL env values. A model with no price here cannot be called:
+# the LLM client refuses rather than log a made-up cost.
+# Anthropic prices: the model table in Anthropic's API docs (as of 2026-10-06).
+# Haiku 5.5 prices apply to prompts up to 100K tokens; IOC prompts stay far below that.
+model_pricing:
+  claude-haiku-5-5:
+    input_per_mtok: 0.10
+    output_per_mtok: 0.50
+    source: "Anthropic API docs model table, 2026-10-06"
+  claude-sonnet-5-5:
+    input_per_mtok: 2.00
+    output_per_mtok: 10.00
+    cache_read_per_mtok: 0.20
+    source: "Anthropic API docs model table, 2026-10-06"
+  # Voyage embedding model: add its price once the model is chosen (M3).
